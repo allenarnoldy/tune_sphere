@@ -1,0 +1,1 @@
+// define User table / CreateAttributes
