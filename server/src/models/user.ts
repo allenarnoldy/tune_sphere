@@ -1,6 +1,7 @@
 // Define User table / CreateAttributes
 
 import { DataTypes, type Sequelize, Model, type Optional } from 'sequelize';
+
 import bcrypt from 'bcrypt';
 
 interface UserAttributes {

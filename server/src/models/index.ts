@@ -5,4 +5,4 @@ import { UserFactory } from './user.js';
 const User = UserFactory(sequelize);
 
 //Export the Sequelize instance & the initialized model for use in other parts of the application
-export {User};
+export {sequelize, User};
