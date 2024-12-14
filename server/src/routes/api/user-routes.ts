@@ -6,7 +6,7 @@ import { User } from '../../models/index.js';
 
 const router = express.Router();
 
-// POST
+// POST /Users
 router.post('/', async (req: Request, res: Response) => {
     try {
         console.log(req.body);
