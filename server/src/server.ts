@@ -2,7 +2,7 @@ const forceDatabaseRefresh = false;  // Flag to control whether to force a datab
 
 import express from 'express';
 import sequelize from './config/connection.js'; // Import the initialized Sequelize instance
-//import routes from './routes/index.js';  // Import the routes for handling different endpoints
+import routes from './routes/api/index.js';  // Import the routes for handling different endpoints
 
 const app = express();  // Create an Express application
 const PORT = process.env.PORT || 3001;  // Define the port for the server to listen on
