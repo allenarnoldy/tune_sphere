@@ -6,6 +6,17 @@ import { User } from '../../models/index.js';
 
 const router = express.Router();
 
+// Get /Users
+router.get('/', async (_req: Request, res: Response) => {
+    try {
+        const users = await User.findAll();
+        res.status(200).json(users);
+    } catch (error){
+        console.log("Error getting Users");
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+});
+
 // POST /Users
 router.post('/', async (req: Request, res: Response) => {
     try {
