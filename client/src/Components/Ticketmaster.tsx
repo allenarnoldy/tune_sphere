@@ -17,7 +17,7 @@ const TicketMasterList: React.FC<TicketMasterListProps> = ({ ticketmasters }) =>
             {ticketmasters && ticketmasters.map((ticketmaster) => (
                 <div className="row align-center mb-5" key={ticketmaster.name}>
                     <div className="col-md-6">
-                        <h3>{ticketmaster.startDateTime}. {ticketmaster.endDateTime}</h3>
+                        <h3>{ticketmaster.sales.public.startDateTime}. {ticketmaster.sales.public.endDateTime}</h3>
                     </div>
                     <div className="col-md-6">
                         <h4><a href={`${ticketmaster.url}`}>{ticketmaster.url}</a></h4>
