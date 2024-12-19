@@ -60,6 +60,19 @@ export function search(term: string): Promise<Track[]> {
     );
 }
 
+export function deletePlaylist(playlistId: string): Promise<void> {
+  const accessToken = getAccessToken();
+  const headers = { Authorization: `Bearer ${accessToken}` };
+
+  return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/followers`, {
+    headers,
+    method: "DELETE",
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to delete playlist");
+    }
+  });
+}
 export function savePlaylist(name: string, trackUris: string[]): Promise<void> {
   const accessToken = getAccessToken();
   const headers = { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" };
