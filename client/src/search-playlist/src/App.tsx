@@ -16,6 +16,7 @@ interface Playlist {
 }
 
 function App() {
+  // State variables for managing application data
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [tracks, setTracks] = useState<Track[]>([]);
   const [playlistName, setPlaylistName] = useState<string>("");
@@ -26,68 +27,72 @@ function App() {
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [selectedPlaylistForAdding, setSelectedPlaylistForAdding] = useState<string>("");
+  const [addTracksErrorMessage, setAddTracksErrorMessage] = useState<string>("");
 
+  // Fetch user playlists when the component mounts
   useEffect(() => {
     getUserPlaylists().then(setPlaylists);
   }, []);
 
-  
+  // Clear error messages after they are set
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => setErrorMessage(""), 2000); // Clear after 1 second
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
 
+  // Clear add tracks error messages after they are set
+  useEffect(() => {
+    if (addTracksErrorMessage) {
+      const timer = setTimeout(() => setAddTracksErrorMessage(""), 2000); // Clear after 1 second
+      return () => clearTimeout(timer);
+    }
+  }, [addTracksErrorMessage]);
+
+  // Handle search functionality
   const handleSearch = () => {
-    if (!searchTerm) return;
-    search(searchTerm).then(setTracks);
-  };
-
-  const handleSavePlaylist = () => {
-    if (!playlistName || trackUris.length === 0) {
-      setErrorMessage("Please provide a playlist name and select tracks.");
+    setErrorMessage(""); // Clear previous error message
+    if (!searchTerm) {
+      setErrorMessage("Search field cannot be empty. Type in an artist or song name to begin.");
       return;
     }
-
-    const playlistExists = playlists.some(
-      (playlist) => playlist.name.toLowerCase() === playlistName.toLowerCase()
-    );
-  
-    if (playlistExists) {
-      setErrorMessage("A playlist with this name already exists.");
-      return;
-    }
-        
-    savePlaylist(playlistName, trackUris).then(() => {
-      setPlaylistName("");
-      setTrackUris([]);
-      setTracks([]);
-      getUserPlaylists().then(setPlaylists);
-      setErrorMessage("");
-    });
+    search(searchTerm)
+      .then(setTracks)
+      .catch(() => setErrorMessage("Failed to fetch search results."));
   };
 
+  // Handle adding tracks to a selected playlist
   const handleAddTracksToPlaylist = () => {
+    setAddTracksErrorMessage(""); // Clear add tracks error message
     if (!selectedPlaylistForAdding || trackUris.length === 0) {
-      setErrorMessage("Please select a playlist and tracks to add.");
+      setAddTracksErrorMessage("Please select a playlist and tracks to add.");
       return;
     }
 
-    // Assuming you have a function to add tracks to a playlist
     addTracksToPlaylist(selectedPlaylistForAdding, trackUris)
-    .then(() => {
-      setTrackUris([]);
-      setTracks([]);
-      setErrorMessage("");
-      // Optionally, refresh the playlist tracks
-      getPlaylistTracks(selectedPlaylistForAdding).then(setPlaylistTracks);
-  }).catch(() => {
-      setErrorMessage("Failed to add tracks to the playlist.");
-  });
-}
+      .then(() => {
+        setTrackUris([]);
+        setTracks([]);
+        setAddTracksErrorMessage("");
+        getPlaylistTracks(selectedPlaylistForAdding).then(setPlaylistTracks);
+      })
+      .catch(() => {
+        setAddTracksErrorMessage("Failed to add tracks to the playlist.");
+      });
+  };
 
+  // Handle track selection for adding to a playlist
   const handleTrackSelection = (uri: string) => {
+    setErrorMessage(""); // Clear error message
     setTrackUris((prevUris) =>
       prevUris.includes(uri) ? prevUris.filter((t) => t !== uri) : [...prevUris, uri]
     );
   };
 
+  // Handle clicking on a playlist to view its tracks
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
+    setErrorMessage(""); // Clear error message
     setSelectedPlaylist(playlistName);
     getPlaylistTracks(playlistId).then((tracks) => {
       setPlaylistTracks(tracks);
@@ -95,7 +100,9 @@ function App() {
     });
   };
 
+  // Handle deleting a playlist
   const handleDeletePlaylist = (playlistId: string) => {
+    setErrorMessage(""); // Clear error message
     deletePlaylist(playlistId)
       .then(() => {
         setPlaylists((prevPlaylists) => prevPlaylists.filter((p) => p.id !== playlistId));
@@ -104,25 +111,22 @@ function App() {
         console.error("Error deleting playlist:", error);
       });
   };
+
+  // Handle deleting a track from a playlist
   const handleDeleteTrack = (trackUri: string) => {
-    if (!selectedPlaylist) return;
-  
-    const playlist = playlists.find((p) => p.name === selectedPlaylist);
-    if (!playlist) return;
-  
-    console.log(`Deleting track with URI: ${trackUri} from playlist: ${playlist.id}`);
-  
-    deleteTrackFromPlaylist(playlist.id, trackUri)
+    setErrorMessage(""); // Clear error message
+    deleteTrackFromPlaylist(selectedPlaylist, trackUri)
       .then(() => {
-        setPlaylistTracks((prevTracks) => prevTracks.filter((t) => t.uri !== trackUri));
-        console.log(`Track with URI: ${trackUri} deleted successfully.`);
+        setPlaylistTracks((prevTracks) => prevTracks.filter((track) => track.uri !== trackUri));
       })
       .catch((error) => {
         console.error("Error deleting track:", error);
       });
   };
 
+  // Handle creating a new playlist
   const handleCreateNewPlaylist = () => {
+    setErrorMessage(""); // Clear error message
     if (!playlistName) {
       setErrorMessage("Please provide a playlist name.");
       return;
@@ -143,8 +147,6 @@ function App() {
       setErrorMessage("");
     });
   };
-      
- 
 
   return (
     <div className="App">
@@ -160,36 +162,35 @@ function App() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search for artists, songs..."
-              style={{ marginRight: "5px", height:"30px" }} // Add margin to the right
-              size={40} // Add size attribute
+              style={{ marginRight: "5px", height: "30px" }}
+              size={40}
             />
             <button onClick={handleSearch}>Search</button>
+            {errorMessage && <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>}
           </div>
-          <div style={{ marginTop: "5px" }}>
-
-          
-          </div>
+          <div style={{ marginTop: "5px" }}></div>
 
           {/* New section for adding tracks to an existing playlist */}
-        <div style={{ marginTop: "20px" }}>
-          <select
-            value={selectedPlaylistForAdding}
-            onChange={(e) => setSelectedPlaylistForAdding(e.target.value)}
-            style={{ 
-              marginRight: "5px", // Add margin to the right of the select element
-              fontSize: "16px", // Adjust the font size
-              padding: "10px" // Adjust the padding for better appearance
-            }}
-          >
-            <option value="">Select a playlist to add tracks</option>
-            {playlists.map((playlist) => (
-              <option key={playlist.id} value={playlist.id}>
-                {playlist.name}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleAddTracksToPlaylist}>Add Tracks to Playlist</button>
-        </div>
+          <div style={{ marginTop: "20px" }}>
+            <select
+              value={selectedPlaylistForAdding}
+              onChange={(e) => setSelectedPlaylistForAdding(e.target.value)}
+              style={{
+                marginRight: "5px",
+                fontSize: "16px",
+                padding: "10px"
+              }}
+            >
+              <option value="">Select a playlist to add tracks</option>
+              {playlists.map((playlist) => (
+                <option key={playlist.id} value={playlist.id}>
+                  {playlist.name}
+                </option>
+              ))}
+            </select>
+            <button onClick={handleAddTracksToPlaylist}>Add Tracks to Playlist</button>
+            {addTracksErrorMessage && <p style={{ color: "red", marginTop: "10px" }}>{addTracksErrorMessage}</p>}
+          </div>
 
           <h2>Search Results</h2>
           <ul style={{ listStyleType: "none", marginBottom: "100px" }}>
@@ -209,7 +210,7 @@ function App() {
 
           <h2>Your Playlists</h2>
           <h4>Click on a playlist to view tracks</h4>
-          <div style={{ marginBottom: "10px" }}>
+          <div style={{ marginBottom: "50px" }}>
             <input
               type="text"
               className="text-input"
@@ -220,15 +221,40 @@ function App() {
               size={40}
             />
             <button onClick={handleCreateNewPlaylist}>Create Playlist</button>
+
+            {errorMessage && <p style={{ color: "red", marginTop: "30px" }}>{errorMessage}</p>}
           </div>
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <ul style={{ listStyleType: "none" }}>
             {playlists.map((playlist) => (
-              <li key={playlist.id} style={{ cursor: "pointer", color: "black" }}>
-                <span onClick={() => handlePlaylistClick(playlist.id, playlist.name)}style={{ marginRight: "5px" }}>
-                  {playlist.name}
-                </span>
-                <button onClick={() => handleDeletePlaylist(playlist.id)}>Delete</button>
+              <li
+                key={playlist.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                  color: "black",
+                  marginBottom: "10px",
+                  border: "4px solid #ccc", // Add this line for the border
+                  padding: "10px", // Optional: Add padding for better spacing
+                  borderRadius: "10px" // Optional: Add border-radius for rounded corners
+                }}
+                onClick={() => handlePlaylistClick(playlist.id, playlist.name)} // Add onClick event here
+              >
+                <div style={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "center" }}>
+                <span style={{ flexGrow: 1, textAlign: "center", fontSize: "15px" }}> {/* Add fontSize here */}
+                 {playlist.name}
+                 </span>
+                  <button
+                   onClick={(e) => {
+                    e.stopPropagation(); // Prevent the click event from bubbling up to the <li>
+                    handleDeletePlaylist(playlist.id);
+                  }}
+                    style={{ fontSize: "16px", padding: "5px 10px" }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
@@ -238,11 +264,12 @@ function App() {
           <h1>{selectedPlaylist}</h1>
           <button onClick={() => setCurrentView("home")}>Back to Playlists</button>
           <ul>
-          {playlistTracks.map((track) => (
-    <li key={track.id}>
-      {track.name} by {track.artist}
-      <button onClick={() => handleDeleteTrack(track.id)}>Delete</button>
-                
+            {playlistTracks.map((track) => (
+              <li key={track.id} style={{ display: "flex", alignItems: "center", marginBottom: "25px" }}>
+                <span style={{ flexGrow: 1 }}>
+                  {track.name} by {track.artist}
+                </span>
+                <button onClick={() => handleDeleteTrack(track.uri)}>Delete</button>
               </li>
             ))}
           </ul>
