@@ -12,5 +12,4 @@ router.post('/api/users', userRouter);
 // Authentication and protected routes
 router.use('/auth', authRoutes);
 router.use('/api', authenticateToken, apiRoutes);
-const router = express.Router();
 export default router;
