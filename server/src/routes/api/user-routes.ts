@@ -1,33 +1,82 @@
-//Define endpoints to access User Data
-
 import express from 'express';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { User } from '../../models/index.js';
 
 const router = express.Router();
 
-// Get /Users
+// GET /users - Get all users
 router.get('/', async (_req: Request, res: Response) => {
-    try {
-        const users = await User.findAll();
-        res.status(200).json(users);
-    } catch (error){
-        console.log("Error getting Users");
-        res.status(500).json({error: 'Internal Server Error'});
-    }
+  try {
+    const users = await User.findAll({
+      attributes: { exclude: ['password'] }
+    });
+    res.json(users);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// POST /Users
+// GET /users/:id - Get a user by id
+router.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ['password'] }
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// POST /users - Create a new user
 router.post('/', async (req: Request, res: Response) => {
-    try {
-        console.log(req.body);
-        const newUser = await User.create(req.body);
-        res.status(201).json(newUser);
-    } catch (error){
-        console.log("Error adding User");
-        res.status(500).json({error: 'Internal Server Error'});
-    }
+  const { user_name, email, password, name, dob, gender, share_info } = req.body;
+  try {
+    const newUser = await User.create({ user_name, email, password, name, dob, gender, share_info });
+    res.status(201).json(newUser);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
-export {router as userRouter};
+// PUT /users/:id - Update a user by id
+router.put('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { user_name, password } = req.body;
+  try {
+    const user = await User.findByPk(id);
+    if (user) {
+      user.user_name = user_name;
+      user.password = password;
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
+// DELETE /users/:id - Delete a user by id
+router.delete('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id);
+    if (user) {
+      await user.destroy();
+      res.json({ message: 'User deleted' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+export { router as userRouter };
