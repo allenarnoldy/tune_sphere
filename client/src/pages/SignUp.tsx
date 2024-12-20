@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { signup } from '../api/authAPI';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('/api/users/signup', formData);
+      const response = await axios.post("/auth/signup", formData);
       if (response.status === 201) {
         setSuccess(true);
         setFormData({
@@ -71,6 +72,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
+    <div className="container">
     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <div className="card shadow-sm" style={{ width: '100%', maxWidth: '600px' }}>
         <div className="card-body">
@@ -78,7 +80,6 @@ const SignUp: React.FC = () => {
           {success && <div className="alert alert-success">User registered successfully!</div>}
 
           <form onSubmit={handleSubmit}>
-            {/* Username and Password */}
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="user_name" className="form-label">Username</label>
@@ -104,7 +105,6 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
-            {/* Email and Full Name */}
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="email" className="form-label">Email</label>
@@ -130,7 +130,6 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
-            {/* Date of Birth and Gender */}
             <div className="row mb-3">
               <div className="col-md-6">
                 <label htmlFor="dob" className="form-label">Date of Birth</label>
@@ -160,7 +159,6 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
-            {/* Share Information */}
             <div className="mb-3">
               <label htmlFor="share_info" className="form-label">Share Information</label>
               <select
@@ -176,7 +174,6 @@ const SignUp: React.FC = () => {
               </select>
             </div>
 
-            {/* Submit */}
             <div className="d-grid gap-2">
               <button type="submit" className="btn btn-primary">Sign Up</button>
             </div>
@@ -189,6 +186,7 @@ const SignUp: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

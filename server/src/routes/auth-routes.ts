@@ -43,6 +43,16 @@ const router = Router();
 // POST /login
 router.post ('/', login )
 
+router.post('/signup', async (req, res) => {
+    const { user_name, email, password, name, dob, gender, share_info } = req.body;
+    try {
+      const newUser = await User.create({ user_name, email, password, name, dob, gender, share_info });
+      res.status(201).json(newUser);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
 export default router;
 
 
