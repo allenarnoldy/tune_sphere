@@ -125,3 +125,31 @@ export function getPlaylistTracks(playlistId: string): Promise<Track[]> {
     );
 }
 
+export function deleteTrackFromPlaylist(playlistId: string, trackUri: string): Promise<void> {
+  const accessToken = getAccessToken();
+  const headers = { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" };
+
+  return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    headers,
+    method: "DELETE",
+    body: JSON.stringify({ tracks: [{ uri: trackUri }] }),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to delete track");
+    }
+  });
+}
+export function addTracksToPlaylist(playlistId: string, trackUris: string[]): Promise<void> {
+  const accessToken = getAccessToken();
+  const headers = { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" };
+
+  return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    headers,
+    method: "POST",
+    body: JSON.stringify({ uris: trackUris }),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to add tracks to playlist");
+    }
+  });
+}
