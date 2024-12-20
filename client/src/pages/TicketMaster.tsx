@@ -1,7 +1,7 @@
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState } from "react";
 import { retrieveTicketMaster } from "../api/ticketmasterAPI";
 import type { TicketMasterData } from "../interfaces/TicketMasterData";
-import ErrorPage from "./ErrorPage";
+// import ErrorPage from "./ErrorPage";
 import TicketMasterList from '../Components/Ticketmaster';
 //import auth from '../utils/auth';
 
@@ -10,7 +10,7 @@ const TicketMaster = () => {
     const [ticketmasters, setTicketMasters] = useState<TicketMasterData[]>([]);
     //const [error, setError] = useState(false);
     const [searchterm,setSearchTerm] = useState('');
-    const [loginCheck, setLoginCheck] = useState(false);
+    // const [loginCheck, setLoginCheck] = useState(false);
 
     // useEffect(() => {
     //     if (loginCheck) {
@@ -62,6 +62,7 @@ const TicketMaster = () => {
         <>
             {/* {
                 !loginCheck ? ( */}
+                    <img src='/tuneSphere-no-bg.png' />
                     <form className="form" onSubmit={handleSubmit}>
                         <div className='login-notice'>
                             <h1>
