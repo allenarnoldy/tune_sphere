@@ -9,11 +9,15 @@ import dotenv from 'dotenv';
 //read config
 dotenv.config();
 
-export const validateUser = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
     const {user_name, password} = req.body;
 
+    if (!user_name || !password) {
+        return res.status(400).json({ message: "Both user_name and password are required" });
+    }
+
     const user = await User.findOne({
-        where: { user_name },
+        where: { "user_name": user_name },
     });
 
     if (!user) {
@@ -37,7 +41,7 @@ const router = Router();
 
 
 // POST /login
-router.post ('/login',validateUser )
+router.post ('/', login )
 
 export default router;
 

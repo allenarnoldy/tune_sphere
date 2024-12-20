@@ -1,11 +1,11 @@
-import apiRouter  from './api/index.js';
-import express from 'express';
+import { Router } from 'express';
+import authRoutes from './auth-routes.js';
+import apiRoutes from './api/index.js';
+import { authenticateToken } from '../middleware/auth.js';
 
+const router = Router();
 
+router.use('/auth', authRoutes);
+router.use('/api', authenticateToken, apiRoutes);
 const router = express.Router();
-
-// Prefix all routes defined in the api directory with `/api`
-router.use('/api',apiRouter);
-//router.use('/auth',apiRouter);
-
 export default router;
