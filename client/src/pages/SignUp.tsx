@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { signup } from '../api/authAPI';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('/api/users/signup', formData);
+      const response = await axios.post(`${signup}`, formData);
       if (response.status === 201) {
         setSuccess(true);
         setFormData({
@@ -71,6 +72,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
+    <div className="container">
     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <div className="card shadow-sm" style={{ width: '100%', maxWidth: '600px' }}>
         <div className="card-body">
@@ -189,6 +191,7 @@ const SignUp: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
