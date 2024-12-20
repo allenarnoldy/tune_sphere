@@ -6,5 +6,5 @@ export interface UserData {
     name: string;
     dob: string;
     gender: string;
-    shareinfo: string;
+    share_info: string;
 }
