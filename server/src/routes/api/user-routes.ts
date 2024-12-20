@@ -34,15 +34,51 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // POST /users - Create a new user
+// POST /users - Create a new user
 router.post('/', async (req: Request, res: Response) => {
-  const { user_name, email, password, name, dob, gender, share_info } = req.body;
-  try {
-    const newUser = await User.create({ user_name, email, password, name, dob, gender, share_info });
-    res.status(201).json(newUser);
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-});
+    const { user_name, email, password, name, dob, gender, share_info } = req.body;
+  
+    // Validate required fields
+    if (!user_name || !email || !password || !name || !dob || !gender || !share_info) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+  
+    try {
+      // Check for unique username and email
+      const existingUser = await User.findOne({ where: { user_name } });
+      if (existingUser) {
+        return res.status(400).json({ message: 'Username is already taken.' });
+      }
+  
+      const existingEmail = await User.findOne({ where: { email } });
+      if (existingEmail) {
+        return res.status(400).json({ message: 'Email is already registered.' });
+      }
+  
+      // Create a new user
+      const newUser = await User.create({
+        user_name,
+        email,
+        password, 
+        name,
+        dob,
+        gender,
+        share_info,
+      });
+  
+      // Respond with minimal user info
+      return res.status(201).json({
+        id: newUser.id,
+        user_name: newUser.user_name,
+        email: newUser.email,
+        message: 'User created successfully!',
+      });
+    } catch (error: any) {
+      console.error(error.message);
+      return res.status(500).json({ message: 'An error occurred while creating the user.' });
+    }
+  });
+  
 
 // PUT /users/:id - Update a user by id
 router.put('/:id', async (req: Request, res: Response) => {
