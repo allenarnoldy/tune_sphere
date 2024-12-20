@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
-import { search, savePlaylist, getUserPlaylists, getPlaylistTracks, deletePlaylist, deleteTrackFromPlaylist, addTracksToPlaylist } from "./utils/spotify";
+import "../App.css";
+import { search, savePlaylist, getUserPlaylists, getPlaylistTracks, deletePlaylist, deleteTrackFromPlaylist, addTracksToPlaylist } from "../utils/spotify";
 
 // Define types for tracks and playlists
 interface Track {
@@ -15,8 +15,9 @@ interface Playlist {
   name: string;
 }
 
-function App() {
-  // State variables for managing application data
+
+const SpotifyPage = () => {
+    // State variables for managing application data
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [tracks, setTracks] = useState<Track[]>([]);
   const [playlistName, setPlaylistName] = useState<string>("");
@@ -100,53 +101,43 @@ function App() {
     });
   };
 
-  // Handle deleting a playlist
-  const handleDeletePlaylist = (playlistId: string) => {
-    setErrorMessage(""); // Clear error message
-    deletePlaylist(playlistId)
-      .then(() => {
-        setPlaylists((prevPlaylists) => prevPlaylists.filter((p) => p.id !== playlistId));
-      })
-      .catch((error) => {
-        console.error("Error deleting playlist:", error);
-      });
-  };
+// Add a new state variable for the playlist creation error message
+const [playlistErrorMessage, setPlaylistErrorMessage] = useState<string>("");
 
-  // Handle deleting a track from a playlist
-  const handleDeleteTrack = (trackUri: string) => {
-    setErrorMessage(""); // Clear error message
-    deleteTrackFromPlaylist(selectedPlaylist, trackUri)
-      .then(() => {
-        setPlaylistTracks((prevTracks) => prevTracks.filter((track) => track.uri !== trackUri));
-      })
-      .catch((error) => {
-        console.error("Error deleting track:", error);
-      });
-  };
+// Clear playlist error messages after they are set
+useEffect(() => {
+  if (playlistErrorMessage) {
+    const timer = setTimeout(() => setPlaylistErrorMessage(""), 2000); // Clear after 2 seconds
+    return () => clearTimeout(timer);
+  }
+}, [playlistErrorMessage]);
 
-  // Handle creating a new playlist
-  const handleCreateNewPlaylist = () => {
-    setErrorMessage(""); // Clear error message
-    if (!playlistName) {
-      setErrorMessage("Please provide a playlist name.");
-      return;
-    }
 
+ // Handle creating a new playlist
+const handleCreateNewPlaylist = () => {
+  setPlaylistErrorMessage(""); // Clear playlist error message
+  if (!playlistName) {
+    setPlaylistErrorMessage("Please provide a playlist name.");
+    return;
+  }
     const playlistExists = playlists.some(
       (playlist) => playlist.name.toLowerCase() === playlistName.toLowerCase()
     );
 
     if (playlistExists) {
-      setErrorMessage("A playlist with this name already exists.");
+      setPlaylistErrorMessage("A playlist with this name already exists.");
       return;
     }
 
     savePlaylist(playlistName, []).then(() => {
       setPlaylistName("");
       getUserPlaylists().then(setPlaylists);
-      setErrorMessage("");
+      setPlaylistErrorMessage("");
     });
   };
+  
+  // In the return statement, update the error message display for playlist creation
+  {playlistErrorMessage && <p style={{ color: "red", marginTop: "30px" }}>{playlistErrorMessage}</p>}
 
   return (
     <div className="App">
@@ -263,20 +254,20 @@ function App() {
         <>
           <h1>{selectedPlaylist}</h1>
           <button onClick={() => setCurrentView("home")}>Back to Playlists</button>
-          <ul>
+          <ul style={{ listStyleType: "decimal", paddingLeft: "20px" }}> {/* Change listStyleType to "decimal" for numbered bullets */}
             {playlistTracks.map((track) => (
-              <li key={track.id} style={{ display: "flex", alignItems: "center", marginBottom: "25px" }}>
-                <span style={{ flexGrow: 1 }}>
+              <li key={track.id} style={{ display: "flex", alignItems: "center", marginBottom: "25px", border: "2px solid #ccc", padding: "10px" }}>
+                <span style={{ flexGrow: 1, fontSize: "18px", fontWeight: "bold" }}>
                   {track.name} by {track.artist}
                 </span>
-                <button onClick={() => handleDeleteTrack(track.uri)}>Delete</button>
+                
               </li>
             ))}
           </ul>
         </>
       )}
     </div>
-  );
-}
-
-export default App;
+    );
+  };
+  
+  export default SpotifyPage;
