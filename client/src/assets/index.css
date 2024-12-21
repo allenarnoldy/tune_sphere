@@ -13,9 +13,14 @@ main{
 }
 
 div {
-    background-color: #13293d;
+    background-color: #13293d !important;
     color: #fff;
     }
+
+    table {
+      background-color: #13293d !important;
+      color: #fff;
+      }
 
 h1 {
     font-size: 200%;
