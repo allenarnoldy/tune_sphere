@@ -1,0 +1,98 @@
+body{
+  min-height: 100vh !important;
+  background-color: #13293d !important;
+}
+
+html{
+  min-height: 100vh !important;
+  background: #13293d;
+}
+
+main{
+  height: 65vh;
+}
+
+div {
+    background-color: #13293d;
+    color: #fff;
+    }
+
+h1 {
+    font-size: 200%;
+    background-color: #13293d;
+    
+   }
+
+  h3 {
+    color: #fff;
+    }
+
+/* 
+ul {
+  display: flex;
+  min-width: 300px;
+  color: #fff;
+    
+} */
+
+nav-item {
+    color: #b9C6ae;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  /* Sets display of all elements with class selector to inline */
+.display-inline {
+  display: inline;
+}
+
+/* nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+} */
+
+.projects {
+  flex: 4;
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  padding: 10px;
+  flex: 0 0 400px;
+}
+
+.card header {
+  padding: 20px;
+}
+
+header {
+  padding: 40px;
+  text-align: center;
+  background: #13293d;
+  color: #fff;
+}
+
+.card img {
+  width: 100%;
+  min-width: 300px;
+}
+
+p {
+  font-weight: 400;
+  text-decoration: inherit;
+  font-size: medium;
+} 
+
+#link {
+  font-weight: 500;
+  text-decoration: inherit;
+  font-size: small;
+} 
