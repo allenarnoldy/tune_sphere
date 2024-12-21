@@ -1,11 +1,11 @@
-//import Auth from '../utils/auth';
+import Auth from '../utils/auth';
 
 const retrieveTicketMaster = async (query:string) => {
   try {
     const response = await fetch(`/api/ticket/${query}`, {
       headers: {
-        'Content-Type': 'application/json'//,
-       // Authorization: `Bearer ${Auth.getToken()}`
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${Auth.getToken()}`
       }
     });
     const data = await response.json();
