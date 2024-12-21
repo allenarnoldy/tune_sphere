@@ -1,5 +1,5 @@
-const clientId = 'aee90b5e8bae4cdea97993a156373283';
-const redirectUri = "http://localhost:3000/";
+const clientId = 'b882678eade24632875c7239a44956c0';
+const redirectUri = "http://localhost:3000/spotify";
 
 let accessToken: string;
 let tokenExpirationTime: number;
@@ -57,7 +57,7 @@ export function search(term: string): Promise<Track[]> {
         artist: track.artists[0].name,
         uri: track.uri,
       }))
-    );
+    )
 }
 
 export function deletePlaylist(playlistId: string): Promise<void> {
@@ -93,7 +93,8 @@ export function savePlaylist(name: string, trackUris: string[]): Promise<void> {
         method: "POST",
         body: JSON.stringify({ uris: trackUris }),
       })
-    );
+    )
+    .then(() => {});
 }
 
 export function getUserPlaylists(): Promise<Playlist[]> {
