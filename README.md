@@ -1,41 +1,20 @@
 # tune_sphere
 ## About
-tune_sphere is a music platform that bring music lovers together. so they can  be able to easily stream their favorite music, find upcoming concerts events, and access song lyrics
-so that I can enjoy the  music experience without interruption, stay up-to-date with concerts near by, and understand the lyrics of the songs they love.
+Tune Sphere is a full-stack web application designed to provide users with a seamless experience for discovering music events and interacting with Spotify's web API. The project leverages modern technologies such as React, TypeScript, Vite, and Express to deliver a robust and efficient web application.
+
 
 ## features
- - play music
- - login 
- - create an account
- - add favorites song
- - select favorite artists
- - select favorite playlist
+- Discover music events using the Ticketmaster API.
+- Interact with Spotify's web API for music-related functionalities.
+- Secure authentication using JWT.
  
- ## tech app
+ ## Technologies Used
+- **Frontend:** React, TypeScript, Vite
+- **Backend:** Express, Sequelize, PostgreSQL
+- **Styling:** Bootstrap
+- **Authentication:** JSON Web Tokens (JWT)
+- **APIs**: Ticketmaster, Spotify
 
- ##front End
-
-- react
-- Bootstrap
-- typescript
-
-
-Back end
-
- - bootstrap
- - react
- - vite
-
- 
-
-- postgress
-- typescript
-- express
-
-## Api 
-- Ticket MAster API
-
-- Spotify Api
 
 ## installations
 
@@ -43,7 +22,7 @@ Back end
 - npm run dev
 - npm start:dev
 
-# development team
+## development team
 
 - Thida phongsavath
 - Mahesh Gunasekaran
