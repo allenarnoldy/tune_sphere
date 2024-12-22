@@ -1,5 +1,5 @@
 const clientId = "b882678eade24632875c7239a44956c0";
-const redirectUri = "http://localhost:3000/spotify";
+const redirectUri = "https://tune-sphere-oibp.onrender.com/home/spotify";
 
 let accessToken: string;
 let tokenExpirationTime: number;
