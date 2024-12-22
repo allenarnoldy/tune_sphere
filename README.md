@@ -14,7 +14,8 @@ SO THAT I can enjoy my favorite artists and explore new music experiences<br>
 - [Technologies Used](#technologies-used)
 - [Installations](#installations)
 - [License](#license)
-- [Development Team](#development-team)<br>
+- [Development Team](#development-team)
+- [Demo](#demo)<br>
 
 
 
