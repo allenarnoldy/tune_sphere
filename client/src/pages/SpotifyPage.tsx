@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import "../App.css";
-import { search, savePlaylist, getUserPlaylists, getPlaylistTracks, addTracksToPlaylist }  from "../utils/spotify";
+import {
+  search,
+  savePlaylist,
+  getUserPlaylists,
+  getPlaylistTracks,
+  addTracksToPlaylist,
+} from "../utils/spotify";
 
 // Define types for tracks and playlists
 interface Track {
@@ -15,9 +21,8 @@ interface Playlist {
   name: string;
 }
 
-
 const SpotifyPage = () => {
-    // State variables for managing application data
+  // State variables for managing application data
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [tracks, setTracks] = useState<Track[]>([]);
   const [playlistName, setPlaylistName] = useState<string>("");
@@ -27,12 +32,14 @@ const SpotifyPage = () => {
   const [playlistTracks, setPlaylistTracks] = useState<Track[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [selectedPlaylistForAdding, setSelectedPlaylistForAdding] = useState<string>("");
-  const [addTracksErrorMessage, setAddTracksErrorMessage] = useState<string>("");
+  const [selectedPlaylistForAdding, setSelectedPlaylistForAdding] =
+    useState<string>("");
+  const [addTracksErrorMessage, setAddTracksErrorMessage] =
+    useState<string>("");
 
   // Fetch user playlists when the component mounts
   useEffect(() => {
-    getUserPlaylists().then(data => setPlaylists(data));
+    getUserPlaylists().then((data) => setPlaylists(data));
   }, []);
 
   // Clear error messages after they are set
@@ -55,7 +62,9 @@ const SpotifyPage = () => {
   const handleSearch = () => {
     setErrorMessage(""); // Clear previous error message
     if (!searchTerm) {
-      setErrorMessage("Search field cannot be empty. Type in an artist or song name to begin.");
+      setErrorMessage(
+        "Search field cannot be empty. Type in an artist or song name to begin."
+      );
       return;
     }
     search(searchTerm)
@@ -87,7 +96,9 @@ const SpotifyPage = () => {
   const handleTrackSelection = (uri: string) => {
     setErrorMessage(""); // Clear error message
     setTrackUris((prevUris) =>
-      prevUris.includes(uri) ? prevUris.filter((t) => t !== uri) : [...prevUris, uri]
+      prevUris.includes(uri)
+        ? prevUris.filter((t) => t !== uri)
+        : [...prevUris, uri]
     );
   };
 
@@ -101,59 +112,67 @@ const SpotifyPage = () => {
     });
   };
 
-// Add a new state variable for the playlist creation error message
-const [playlistErrorMessage, setPlaylistErrorMessage] = useState<string>("");
+  // Add a new state variable for the playlist creation error message
+  const [playlistErrorMessage, setPlaylistErrorMessage] = useState<string>("");
 
-// Clear playlist error messages after they are set
-useEffect(() => {
-  if (playlistErrorMessage) {
-    const timer = setTimeout(() => setPlaylistErrorMessage(""), 2000); // Clear after 2 seconds
-    return () => clearTimeout(timer);
-  }
-}, [playlistErrorMessage]);
+  // Clear playlist error messages after they are set
+  useEffect(() => {
+    if (playlistErrorMessage) {
+      const timer = setTimeout(() => setPlaylistErrorMessage(""), 2000); // Clear after 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [playlistErrorMessage]);
 
+  // Handle creating a new playlist
+  const handleCreateNewPlaylist = () => {
+    setPlaylistErrorMessage(""); // Clear playlist error message
+    if (!playlistName) {
+      setPlaylistErrorMessage("Please provide a playlist name.");
+      return;
+    }
+    const playlistExists = playlists.some(
+      (playlist) => playlist.name.toLowerCase() === playlistName.toLowerCase()
+    );
 
-// Handle creating a new playlist
-const handleCreateNewPlaylist = () => {
-  setPlaylistErrorMessage(""); // Clear playlist error message
-  if (!playlistName) {
-    setPlaylistErrorMessage("Please provide a playlist name.");
-    return;
-  }
-  const playlistExists = playlists.some(
-    (playlist) => playlist.name.toLowerCase() === playlistName.toLowerCase()
-  );
+    if (playlistExists) {
+      setPlaylistErrorMessage("A playlist with this name already exists.");
+      return;
+    }
 
-  if (playlistExists) {
-    setPlaylistErrorMessage("A playlist with this name already exists.");
-    return;
-  }
+    savePlaylist(playlistName, []).then(() => {
+      setPlaylistName("");
+      getUserPlaylists().then(setPlaylists);
+      setPlaylistErrorMessage("");
+    });
+  };
 
-  savePlaylist(playlistName, []).then(() => {
-    setPlaylistName("");
-    getUserPlaylists().then(setPlaylists);
-    setPlaylistErrorMessage("");
-  });
-};
+  // Handle deleting a playlist
+  const handleDeletePlaylist = (playlistId: string) => {
+    // Implement the logic to delete the playlist
+    // For example, you can call a function from your utils to delete the playlist
+    // and then update the state accordingly
+    console.log(`Deleting playlist with id: ${playlistId}`);
+    // Add your delete logic here
+  };
 
-// Handle deleting a playlist
-const handleDeletePlaylist = (playlistId: string) => {
-  // Implement the logic to delete the playlist
-  // For example, you can call a function from your utils to delete the playlist
-  // and then update the state accordingly
-  console.log(`Deleting playlist with id: ${playlistId}`);
-  // Add your delete logic here
-};
-  
   // In the return statement, update the error message display for playlist creation
-  {playlistErrorMessage && <p style={{ color: "red", marginTop: "30px" }}>{playlistErrorMessage}</p>}
+  {
+    playlistErrorMessage && (
+      <p style={{ color: "red", marginTop: "30px" }}>{playlistErrorMessage}</p>
+    );
+  }
 
   return (
     <div className="App">
       {currentView === "home" ? (
         <>
           <h1>TuneSphere Playlist Manager</h1>
-          <img src="dist/tuneSphere.jpg" alt="TuneSphere Logo" style={{ width: "150px", marginBottom: "20px" }} />
+          <img
+            src="/tuneSphere-no-bg.png"
+            alt="TuneSphere picture"
+            width="200"
+            height="200"
+          ></img>
           <h2>Discover Artists, Build Playlists, Fuel Your Vibe</h2>
           <div>
             <input
@@ -166,7 +185,9 @@ const handleDeletePlaylist = (playlistId: string) => {
               size={40}
             />
             <button onClick={handleSearch}>Search</button>
-            {errorMessage && <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>}
+            {errorMessage && (
+              <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>
+            )}
           </div>
           <div style={{ marginTop: "5px" }}></div>
 
@@ -178,7 +199,7 @@ const handleDeletePlaylist = (playlistId: string) => {
               style={{
                 marginRight: "5px",
                 fontSize: "16px",
-                padding: "10px"
+                padding: "10px",
               }}
             >
               <option value="">Select a playlist to add tracks</option>
@@ -188,8 +209,14 @@ const handleDeletePlaylist = (playlistId: string) => {
                 </option>
               ))}
             </select>
-            <button onClick={handleAddTracksToPlaylist}>Add Tracks to Playlist</button>
-            {addTracksErrorMessage && <p style={{ color: "red", marginTop: "10px" }}>{addTracksErrorMessage}</p>}
+            <button onClick={handleAddTracksToPlaylist}>
+              Add Tracks to Playlist
+            </button>
+            {addTracksErrorMessage && (
+              <p style={{ color: "red", marginTop: "10px" }}>
+                {addTracksErrorMessage}
+              </p>
+            )}
           </div>
 
           <h2>Search Results</h2>
@@ -222,7 +249,9 @@ const handleDeletePlaylist = (playlistId: string) => {
             />
             <button onClick={handleCreateNewPlaylist}>Create Playlist</button>
 
-            {errorMessage && <p style={{ color: "red", marginTop: "30px" }}>{errorMessage}</p>}
+            {errorMessage && (
+              <p style={{ color: "red", marginTop: "30px" }}>{errorMessage}</p>
+            )}
           </div>
           <ul style={{ listStyleType: "none" }}>
             {playlists.map((playlist) => (
@@ -237,19 +266,34 @@ const handleDeletePlaylist = (playlistId: string) => {
                   marginBottom: "10px",
                   border: "4px solid #ccc", // Add this line for the border
                   padding: "10px", // Optional: Add padding for better spacing
-                  borderRadius: "10px" // Optional: Add border-radius for rounded corners
+                  borderRadius: "10px", // Optional: Add border-radius for rounded corners
                 }}
                 onClick={() => handlePlaylistClick(playlist.id, playlist.name)} // Add onClick event here
               >
-                <div style={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "center" }}>
-                <span style={{ flexGrow: 1, textAlign: "center", fontSize: "15px" }}> {/* Add fontSize here */}
-                 {playlist.name}
-                 </span>
-                  <button
-                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent the click event from bubbling up to the <li>
-                    handleDeletePlaylist(playlist.id);
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    justifyContent: "center",
                   }}
+                >
+                  <span
+                    style={{
+                      flexGrow: 1,
+                      textAlign: "center",
+                      fontSize: "15px",
+                    }}
+                  >
+                    {" "}
+                    {/* Add fontSize here */}
+                    {playlist.name}
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent the click event from bubbling up to the <li>
+                      handleDeletePlaylist(playlist.id);
+                    }}
                     style={{ fontSize: "16px", padding: "5px 10px" }}
                   >
                     Delete
@@ -262,21 +306,35 @@ const handleDeletePlaylist = (playlistId: string) => {
       ) : (
         <>
           <h1>{selectedPlaylist}</h1>
-          <button onClick={() => setCurrentView("home")}>Back to Playlists</button>
-          <ul style={{ listStyleType: "decimal", paddingLeft: "20px" }}> {/* Change listStyleType to "decimal" for numbered bullets */}
+          <button onClick={() => setCurrentView("home")}>
+            Back to Playlists
+          </button>
+          <ul style={{ listStyleType: "decimal", paddingLeft: "20px" }}>
+            {" "}
+            {/* Change listStyleType to "decimal" for numbered bullets */}
             {playlistTracks.map((track) => (
-              <li key={track.id} style={{ display: "flex", alignItems: "center", marginBottom: "25px", border: "2px solid #ccc", padding: "10px" }}>
-                <span style={{ flexGrow: 1, fontSize: "18px", fontWeight: "bold" }}>
+              <li
+                key={track.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "25px",
+                  border: "2px solid #ccc",
+                  padding: "10px",
+                }}
+              >
+                <span
+                  style={{ flexGrow: 1, fontSize: "18px", fontWeight: "bold" }}
+                >
                   {track.name} by {track.artist}
                 </span>
-                
               </li>
             ))}
           </ul>
         </>
       )}
     </div>
-    );
-  };
-  
-  export default SpotifyPage;
+  );
+};
+
+export default SpotifyPage;
