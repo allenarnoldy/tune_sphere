@@ -141,7 +141,7 @@ const handleCreateNewPlaylist = () => {
       {currentView === "home" ? (
         <>
           <h1>TuneSphere Playlist Manager</h1>
-          <img src="images/tunespherelogo.png" alt="TuneSphere Logo" style={{ width: "150px", marginBottom: "20px" }} />
+          <img src="/tuneSphere-no-bg.png" alt="TuneSphere picture" width="200" height="200"></img>
           <h2>Discover Artists, Build Playlists, Fuel Your Vibe</h2>
           <div>
             <input

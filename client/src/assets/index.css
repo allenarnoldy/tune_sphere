@@ -1,103 +1,128 @@
-body{
-  min-height: 100vh !important;
-  background-color: #13293d !important;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html{
-  min-height: 100vh !important;
-  background: #13293d;
-}
-
-main{
-  height: 100vh;
-}
-
-div {
-    background-color: #13293d !important;
-    color: #fff;
-    }
-
-    table {
-      background-color: #13293d !important;
-      color: #fff;
-      }
-
-h1 {
-    font-size: 200%;
-    background-color: #13293d;
-    
-   }
-
-  h3 {
-    color: #fff;
-    }
-
-/* 
-ul {
-  display: flex;
-  min-width: 300px;
+html,
+body {
+  min-height: 100%;
+  background-color: #42586d;
   color: #fff;
-    
-} */
-
-nav-item {
-    color: #b9C6ae;
-    font-weight: bold;
-    text-decoration: none;
-  }
-
-  /* Sets display of all elements with class selector to inline */
-.display-inline {
-  display: inline;
 }
 
-/* nav {
+body {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-} */
+  flex-direction: column;
+}
 
-.projects {
-  flex: 4;
-  background-color: #fff;
-  padding: 20px;
+.container {
+  flex: 1;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  margin-bottom: 40px;
 }
 
 .card {
-  border-style: solid;
-  border-width: 1px;
+  background-color: #d3d0d0;
   border-radius: 10px;
-  padding: 10px;
-  flex: 0 0 400px;
-}
-
-.card header {
+  border-color: #1b1b1b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #fff;
   padding: 20px;
 }
 
-header {
-  padding: 40px;
-  text-align: center;
-  background: #13293d;
+.card-signup {
+  background-color: #d3d0d0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  padding: 20px;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form .form-label {
+  color: #42586d;
+}
+
+form .form-control,
+form .form-select {
+  border: 1px solid #42586d;
+  border-radius: 5px;
+  padding: 10px;
+  background: #fff;
+}
+
+form .form-control:focus,
+form .form-select:focus {
+  border-color: #42586d;
+  box-shadow: 0 0 4px rgba(1, 1, 7, 0.5);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #42586d;
+  border-color: #42586d;
   color: #fff;
 }
 
-.card img {
-  width: 100%;
-  min-width: 300px;
+.btn-primary:hover {
+  background-color: #618cb1;
 }
 
-p {
-  font-weight: 400;
-  text-decoration: inherit;
-  font-size: medium;
-} 
+.btn-secondary {
+  background-color: #42586d;
+  color: #fff;
+}
 
-#link {
-  font-weight: 500;
-  text-decoration: inherit;
-  font-size: small;
-} 
+.btn-secondary:hover {
+  background-color: #618cb1;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+h1,
+h2,
+h3 {
+  color: #1b1b1b;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 10px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+}
+
+.extra-content {
+  height: 200vh; /* Simulates extra content to create scrolling */
+  background: transparent; /* Retain the page background */
+}

@@ -5,7 +5,6 @@ import Auth from "../utils/auth";
 import { login } from "../api/authAPI";
 import { UserLogin } from "../interfaces/UserLogin";
 
-
 const Login = () => {
   const [loginData, setLoginData] = useState<UserLogin>({
     user_name: "",
@@ -17,7 +16,9 @@ const Login = () => {
   const navigate = useNavigate(); // Initialize navigate
 
   // Handle changes in the input fields
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setLoginData({
       ...loginData,
@@ -67,19 +68,27 @@ const Login = () => {
   };
 
   return (
-    <div className="container" style={{ backgroundColor: "white", minHeight: "100vh" }}>
-  <div className="d-flex justify-content-center align-items-center vh-100">
-    <div className="card container mt-5" style={{ maxWidth: "400px", backgroundColor: "white" }}>
-      <form onSubmit={handleSubmit} className="p-4 border rounded">
-        <h2 className="text-center text-white mb-4">Login</h2>
-          {error && <div className="alert alert-danger">{error}</div>}
+    <div className="container">
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="card container mt-5" style={{ maxWidth: "400px" }}>
+          <img
+            src="/tuneSphere-no-bg.png"
+            alt="TuneSphere picture"
+            width="200"
+            height="200"
+          ></img>
+          <form onSubmit={handleSubmit} className="p-4 border rounded">
+            <h2 className="text-center mb-4">Login</h2>
+            {error && <div className="alert alert-danger">{error}</div>}
             <div className="mb-3">
               <label htmlFor="user_name" className="form-label">
                 Username
               </label>
               <input
                 type="text"
-                className={`form-control ${errors.user_name ? "is-invalid" : ""}`}
+                className={`form-control ${
+                  errors.user_name ? "is-invalid" : ""
+                }`}
                 id="user_name"
                 name="user_name"
                 value={loginData.user_name}
@@ -95,7 +104,9 @@ const Login = () => {
               </label>
               <input
                 type="password"
-                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                className={`form-control ${
+                  errors.password ? "is-invalid" : ""
+                }`}
                 id="password"
                 name="password"
                 value={loginData.password}
