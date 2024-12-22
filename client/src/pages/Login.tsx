@@ -71,7 +71,7 @@ const Login = () => {
   <div className="d-flex justify-content-center align-items-center vh-100">
     <div className="card container mt-5" style={{ maxWidth: "400px", backgroundColor: "white" }}>
       <form onSubmit={handleSubmit} className="p-4 border rounded">
-        <h2 className="text-center mb-4">Login</h2>
+        <h2 className="text-center text-white mb-4">Login</h2>
           {error && <div className="alert alert-danger">{error}</div>}
             <div className="mb-3">
               <label htmlFor="user_name" className="form-label">
