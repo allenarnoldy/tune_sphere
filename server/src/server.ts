@@ -1,3 +1,4 @@
+import type { Request, Response } from 'express';  
 const forceDatabaseRefresh = false;  // Flag to control whether to force a database refresh on server start
 
 import express from 'express';
@@ -12,6 +13,10 @@ app.use(express.static('../client/dist'));
 
 app.use(express.json());  // Middleware to parse JSON request bodies
 app.use(routes);  // Use the imported routes for handling API endpoints
+
+app.get('*', (_req: Request, res: Response) => {
+  res.sendFile("index.html", { root: "../client/dist" });  
+});
 
 // Sync the Sequelize models with the database
 sequelize.sync({ force: forceDatabaseRefresh }).then(() => {
