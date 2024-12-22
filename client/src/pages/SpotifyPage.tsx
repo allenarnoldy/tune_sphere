@@ -140,7 +140,7 @@ const handleCreateNewPlaylist = () => {
     <div className="App">
       {currentView === "home" ? (
         <>
-          <h1>TuneSphere Playlist Manager</h1>
+          <h2>TuneSphere Playlist Manager</h2>
           <img src="/tuneSphere-no-bg.png" alt="TuneSphere picture" width="200" height="200"></img>
           <h2>Discover Artists, Build Playlists, Fuel Your Vibe</h2>
           <div>
@@ -150,8 +150,8 @@ const handleCreateNewPlaylist = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search for artists, songs..."
-              style={{ marginRight: "5px", height: "30px" }}
-              size={40}
+              style={{ marginRight: "5px", height: "40px" }}
+              size={43}
             />
             <button onClick={handleSearch}>Search</button>
             {errorMessage && <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>}
@@ -205,8 +205,8 @@ const handleCreateNewPlaylist = () => {
               value={playlistName}
               onChange={(e) => setPlaylistName(e.target.value)}
               placeholder="New Playlist Name"
-              style={{ marginRight: "5px", height: "30px" }}
-              size={40}
+              style={{ marginRight: "5px", height: "40px" }}
+              size={35}
             />
             <button onClick={handleCreateNewPlaylist}>Create Playlist</button>
 
