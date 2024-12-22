@@ -62,7 +62,7 @@ const TicketMaster = () => {
         <>
             {/* {
                 !loginCheck ? ( */}
-            <img src='/tuneSphere-no-bg.png' />
+            <img src="/tuneSphere-no-bg.png" alt="TuneSphere picture" width="200" height="200"></img>
             <form className="form mb-4" onSubmit={handleSubmit}>
                 <div className='login-notice'>
                     <h3>
@@ -72,11 +72,11 @@ const TicketMaster = () => {
                 <div className="row align-items-center">
                     <div className="col-10">
                         {/* <label htmlFor="exampleFormControlInput1" className="form-label">Search for Artist</label> */}
-                        <input type="text" name="artistName" className="form-control w-50" id="exampleFormControlInput1" placeholder="Type Artist Name" onChange={(e) => setSearchTerm(e.target.value)}></input>
+                        <input type="text" name="artistName" className="form-control w-40" id="exampleFormControlInput1" placeholder="Type Artist Name" onChange={(e) => setSearchTerm(e.target.value)}></input>
                     </div>
 
                     <div className="col-2">
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button type="submit" className="btn btn-light border fw-bold">Submit</button>
                     </div>
                 </div>
             </form>
