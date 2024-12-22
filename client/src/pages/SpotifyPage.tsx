@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "../App.css";
-import { search, savePlaylist, getUserPlaylists, getPlaylistTracks, addTracksToPlaylist }  from "../utils/spotify";
+import { search, savePlaylist, getUserPlaylists, getPlaylistTracks, deletePlaylist, addTracksToPlaylist } from "../utils/spotify";
 
 // Define types for tracks and playlists
 interface Track {
@@ -15,9 +15,8 @@ interface Playlist {
   name: string;
 }
 
-
-const SpotifyPage = () => {
-    // State variables for managing application data
+function App() {
+  // State variables for managing application data
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [tracks, setTracks] = useState<Track[]>([]);
   const [playlistName, setPlaylistName] = useState<string>("");
@@ -38,7 +37,7 @@ const SpotifyPage = () => {
   // Clear error messages after they are set
   useEffect(() => {
     if (errorMessage) {
-      const timer = setTimeout(() => setErrorMessage(""), 2000); // Clear after 1 second
+      const timer = setTimeout(() => setErrorMessage(""), 2000); // Clear after 2 second
       return () => clearTimeout(timer);
     }
   }, [errorMessage]);
@@ -46,7 +45,7 @@ const SpotifyPage = () => {
   // Clear add tracks error messages after they are set
   useEffect(() => {
     if (addTracksErrorMessage) {
-      const timer = setTimeout(() => setAddTracksErrorMessage(""), 2000); // Clear after 1 second
+      const timer = setTimeout(() => setAddTracksErrorMessage(""), 2000); // Clear after 2 second
       return () => clearTimeout(timer);
     }
   }, [addTracksErrorMessage]);
@@ -95,7 +94,7 @@ const SpotifyPage = () => {
   const handlePlaylistClick = (playlistId: string, playlistName: string) => {
     setErrorMessage(""); // Clear error message
     setSelectedPlaylist(playlistName);
-    getPlaylistTracks(playlistId).then((tracks) => {
+    getPlaylistTracks(playlistId).then((tracks: Track[]) => {
       setPlaylistTracks(tracks);
       setCurrentView("playlistTracks");
     });
@@ -113,47 +112,36 @@ useEffect(() => {
 }, [playlistErrorMessage]);
 
 
-// Handle creating a new playlist
+ // Handle creating a new playlist
 const handleCreateNewPlaylist = () => {
   setPlaylistErrorMessage(""); // Clear playlist error message
   if (!playlistName) {
     setPlaylistErrorMessage("Please provide a playlist name.");
     return;
   }
-  const playlistExists = playlists.some(
-    (playlist) => playlist.name.toLowerCase() === playlistName.toLowerCase()
-  );
+    const playlistExists = playlists.some(
+      (playlist) => playlist.name.toLowerCase() === playlistName.toLowerCase()
+    );
 
-  if (playlistExists) {
-    setPlaylistErrorMessage("A playlist with this name already exists.");
-    return;
-  }
+    if (playlistExists) {
+      setPlaylistErrorMessage("A playlist with this name already exists.");
+      console.log("Duplicate playlist name detected:", playlistName);
+      return;
+    }
 
-  savePlaylist(playlistName, []).then(() => {
-    setPlaylistName("");
-    getUserPlaylists().then(setPlaylists);
-    setPlaylistErrorMessage("");
-  });
-};
-
-// Handle deleting a playlist
-const handleDeletePlaylist = (playlistId: string) => {
-  // Implement the logic to delete the playlist
-  // For example, you can call a function from your utils to delete the playlist
-  // and then update the state accordingly
-  console.log(`Deleting playlist with id: ${playlistId}`);
-  // Add your delete logic here
-};
-  
-  // In the return statement, update the error message display for playlist creation
-  {playlistErrorMessage && <p style={{ color: "red", marginTop: "30px" }}>{playlistErrorMessage}</p>}
+    savePlaylist(playlistName, []).then(() => {
+      setPlaylistName("");
+      getUserPlaylists().then(setPlaylists);
+      setPlaylistErrorMessage("");
+    });
+  };
 
   return (
     <div className="App">
       {currentView === "home" ? (
         <>
           <h1>TuneSphere Playlist Manager</h1>
-          <img src="dist/tuneSphere.jpg" alt="TuneSphere Logo" style={{ width: "150px", marginBottom: "20px" }} />
+          <img src="images/tunespherelogo.png" alt="TuneSphere Logo" style={{ width: "150px", marginBottom: "20px" }} />
           <h2>Discover Artists, Build Playlists, Fuel Your Vibe</h2>
           <div>
             <input
@@ -222,7 +210,7 @@ const handleDeletePlaylist = (playlistId: string) => {
             />
             <button onClick={handleCreateNewPlaylist}>Create Playlist</button>
 
-            {errorMessage && <p style={{ color: "red", marginTop: "30px" }}>{errorMessage}</p>}
+            {playlistErrorMessage && <p style={{ color: "red", marginTop: "30px" }}>{playlistErrorMessage}</p>}
           </div>
           <ul style={{ listStyleType: "none" }}>
             {playlists.map((playlist) => (
@@ -248,7 +236,10 @@ const handleDeletePlaylist = (playlistId: string) => {
                   <button
                    onClick={(e) => {
                     e.stopPropagation(); // Prevent the click event from bubbling up to the <li>
-                    handleDeletePlaylist(playlist.id);
+                    deletePlaylist(playlist.id);
+                    setPlaylists((prevPlaylists) =>
+                      prevPlaylists.filter((p) => p.id !== playlist.id)
+                    );
                   }}
                     style={{ fontSize: "16px", padding: "5px 10px" }}
                   >
@@ -269,14 +260,14 @@ const handleDeletePlaylist = (playlistId: string) => {
                 <span style={{ flexGrow: 1, fontSize: "18px", fontWeight: "bold" }}>
                   {track.name} by {track.artist}
                 </span>
-                
+
               </li>
             ))}
           </ul>
         </>
       )}
     </div>
-    );
-  };
-  
-  export default SpotifyPage;
+  );
+}
+
+export default App;
