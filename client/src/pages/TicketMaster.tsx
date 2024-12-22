@@ -9,7 +9,7 @@ const TicketMaster = () => {
 
     const [ticketmasters, setTicketMasters] = useState<TicketMasterData[]>([]);
     //const [error, setError] = useState(false);
-    const [searchterm,setSearchTerm] = useState('');
+    const [searchterm, setSearchTerm] = useState('');
     // const [loginCheck, setLoginCheck] = useState(false);
 
     // useEffect(() => {
@@ -40,19 +40,19 @@ const TicketMaster = () => {
     // }
 
     // Handle form submission for login
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-        //fetch from state variable
-        const query = searchterm;
-        const data = await retrieveTicketMaster(query);
-        setTicketMasters(data)
-        // If login is successful, call Auth.login to store the token in localStorage
-        //Auth.login(data.token);
-    } catch (err) {
-      console.error('Failed to fetch Ticket master data', err);  // Log any errors during fetch
-    }
-  };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            //fetch from state variable
+            const query = searchterm;
+            const data = await retrieveTicketMaster(query);
+            setTicketMasters(data)
+            // If login is successful, call Auth.login to store the token in localStorage
+            //Auth.login(data.token);
+        } catch (err) {
+            console.error('Failed to fetch Ticket master data', err);  // Log any errors during fetch
+        }
+    };
 
     // if (error) {
     //     return <ErrorPage />;
@@ -62,26 +62,28 @@ const TicketMaster = () => {
         <>
             {/* {
                 !loginCheck ? ( */}
-                    <img src='/tuneSphere-no-bg.png' />
-                    <form className="form" onSubmit={handleSubmit}>
-                        <div className='login-notice'>
-                            <h1>
-                                Please use the search button to see the list of events related to your favourite Artist!
-                            </h1>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor ="exampleFormControlInput1" className="form-label">Search for Artist</label>
-                            <input type="text" name="artistName" className="form-control w-50" id="exampleFormControlInput1" placeholder="Type Artist Name" onChange={(e)=>setSearchTerm(e.target.value)}></input>
-                        </div>
+            <img src='/tuneSphere-no-bg.png' />
+            <form className="form mb-4" onSubmit={handleSubmit}>
+                <div className='login-notice'>
+                    <h3>
+                        Please use the search button to see the list of events related to your favourite Artist!
+                    </h3>
+                </div>
+                <div className="row align-items-center">
+                    <div className="col-10">
+                        {/* <label htmlFor="exampleFormControlInput1" className="form-label">Search for Artist</label> */}
+                        <input type="text" name="artistName" className="form-control w-50" id="exampleFormControlInput1" placeholder="Type Artist Name" onChange={(e) => setSearchTerm(e.target.value)}></input>
+                    </div>
 
-                        <div className="mb-3">
-                            <button type="submit" className="btn btn-primary mb-3">Submit</button>
-                        </div>
-                    </form>
+                    <div className="col-2">
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
 
-                    <TicketMasterList ticketmasters={ticketmasters} />
+            <TicketMasterList ticketmasters={ticketmasters} />
 
-                {/* ) : (
+            {/* ) : (
                     
                 )
             } */}

@@ -75,7 +75,7 @@ const SignUp: React.FC = () => {
     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
       <div className="card shadow-sm" style={{ width: '100%', maxWidth: '600px' }}>
         <div className="card-body">
-          <h2 className="text-center mb-4">Sign Up</h2>
+          <h2 className="text-center text-white mb-4">Sign Up</h2>
           {success && <div className="alert alert-success">User registered successfully!</div>}
 
           <form onSubmit={handleSubmit}>
