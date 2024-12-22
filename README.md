@@ -1,4 +1,9 @@
 # tune_sphere
+
+## User Story
+As a music enthusiast, I want to discover music events and create personalized playlists, so that I can enjoy my favorite artists and explore new music experiences.
+
+
 ## About
 Tune Sphere is a full-stack web application designed to provide users with a seamless experience for discovering music events and interacting with Spotify's web API. The project leverages modern technologies such as React, TypeScript, Vite, and Express to deliver a robust and efficient web application.
 
