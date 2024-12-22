@@ -5,6 +5,7 @@ import Auth from "../utils/auth";
 import { login } from "../api/authAPI";
 import { UserLogin } from "../interfaces/UserLogin";
 
+
 const Login = () => {
   const [loginData, setLoginData] = useState<UserLogin>({
     user_name: "",
@@ -54,7 +55,7 @@ const Login = () => {
       Auth.login(data.token);
 
       // Redirect to /home
-      document.location.assign("/home");
+      navigate("/home");
     } catch (err) {
       setError("Login failed. Please try again.");
       console.error("Failed to login", err); // Log any errors that occur during login
@@ -66,12 +67,12 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="container mt-5" style={{ maxWidth: "400px" }}>
-          <h2 className="text-center mb-4">Login</h2>
+    <div className="container" style={{ backgroundColor: "white", minHeight: "100vh" }}>
+  <div className="d-flex justify-content-center align-items-center vh-100">
+    <div className="card container mt-5" style={{ maxWidth: "400px", backgroundColor: "white" }}>
+      <form onSubmit={handleSubmit} className="p-4 border rounded">
+        <h2 className="text-center mb-4">Login</h2>
           {error && <div className="alert alert-danger">{error}</div>}
-          <form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
             <div className="mb-3">
               <label htmlFor="user_name" className="form-label">
                 Username

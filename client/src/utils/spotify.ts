@@ -1,4 +1,4 @@
-const clientId = 'b882678eade24632875c7239a44956c0';
+const clientId = "b882678eade24632875c7239a44956c0";
 const redirectUri = "http://localhost:3000/spotify";
 
 let accessToken: string;
@@ -38,7 +38,9 @@ export function getAccessToken(): string {
     window.history.pushState("Access Token", "", "/");
     return accessToken;
   } else {
-    const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public%20playlist-modify-private%20user-read-private%20user-read-email&redirect_uri=${encodeURIComponent(redirectUri)}`;
+    const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public%20playlist-modify-private%20user-read-private%20user-read-email&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}`;
     window.location.href = accessUrl;
   }
   return "";
@@ -46,9 +48,14 @@ export function getAccessToken(): string {
 
 export function search(term: string): Promise<Track[]> {
   const accessToken = getAccessToken();
-  return fetch(`https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(term)}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  })
+  return fetch(
+    `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(
+      term
+    )}`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }
+  )
     .then((response) => response.json())
     .then((data) =>
       data.tracks.items.map((track: any) => ({
@@ -57,7 +64,7 @@ export function search(term: string): Promise<Track[]> {
         artist: track.artists[0].name,
         uri: track.uri,
       }))
-    )
+    );
 }
 
 export function deletePlaylist(playlistId: string): Promise<void> {
@@ -75,7 +82,10 @@ export function deletePlaylist(playlistId: string): Promise<void> {
 }
 export function savePlaylist(name: string, trackUris: string[]): Promise<void> {
   const accessToken = getAccessToken();
-  const headers = { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  };
 
   return fetch("https://api.spotify.com/v1/me", { headers })
     .then((response) => response.json())
@@ -97,18 +107,26 @@ export function savePlaylist(name: string, trackUris: string[]): Promise<void> {
     .then(() => {});
 }
 
-export function getUserPlaylists(): Promise<Playlist[]> {
+export async function getUserPlaylists(): Promise<Playlist[]> {
   const accessToken = getAccessToken();
-  return fetch("https://api.spotify.com/v1/me/playlists", {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  })
-    .then((response) => response.json())
-    .then((data) =>
-      data.items.map((playlist: any) => ({
-        id: playlist.id,
-        name: playlist.name,
-      }))
-    );
+  console.log("HEY YOU: TOKEN BABY", accessToken);
+  try {
+    const firstResponse = await fetch(
+      "https://api.spotify.com/v1/me/playlists",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    ).then((response) => response.json());
+
+    console.log("Got some response data", firstResponse);
+    return firstResponse.items.map((playlist: any) => ({
+      id: playlist.id,
+      name: playlist.name,
+    }));
+  } catch (error) {
+    console.error("Did a very sad job", error);
+    return [];
+  }
 }
 
 export function getPlaylistTracks(playlistId: string): Promise<Track[]> {
@@ -126,9 +144,15 @@ export function getPlaylistTracks(playlistId: string): Promise<Track[]> {
     );
 }
 
-export function deleteTrackFromPlaylist(playlistId: string, trackUri: string): Promise<void> {
+export function deleteTrackFromPlaylist(
+  playlistId: string,
+  trackUri: string
+): Promise<void> {
   const accessToken = getAccessToken();
-  const headers = { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  };
 
   return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
     headers,
@@ -140,9 +164,15 @@ export function deleteTrackFromPlaylist(playlistId: string, trackUri: string): P
     }
   });
 }
-export function addTracksToPlaylist(playlistId: string, trackUris: string[]): Promise<void> {
+export function addTracksToPlaylist(
+  playlistId: string,
+  trackUris: string[]
+): Promise<void> {
   const accessToken = getAccessToken();
-  const headers = { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" };
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  };
 
   return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
     headers,

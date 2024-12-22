@@ -32,7 +32,7 @@ const SpotifyPage = () => {
 
   // Fetch user playlists when the component mounts
   useEffect(() => {
-    getUserPlaylists().then(setPlaylists);
+    getUserPlaylists().then(data => setPlaylists(data));
   }, []);
 
   // Clear error messages after they are set
