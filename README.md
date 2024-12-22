@@ -1,9 +1,27 @@
 # tune_sphere
-## About
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<br><br>
+
+
+## User Story
+As A music enthusiast<br>
+I Want to discover music events and create personalized playlists <br>
+SO THAT I can enjoy my favorite artists and explore new music experiences<br>
+
+## Table of Contents
+- [Description](#description)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installations](#installations)
+- [License](#license)
+- [Development Team](#development-team)<br>
+
+
+
+## Description 
 Tune Sphere is a full-stack web application designed to provide users with a seamless experience for discovering music events and interacting with Spotify's web API. The project leverages modern technologies such as React, TypeScript, Vite, and Express to deliver a robust and efficient web application.
 
-
-## features
+## Features
 - Discover music events using the Ticketmaster API.
 - Interact with Spotify's web API for music-related functionalities.
 - Secure authentication using JWT.
@@ -15,18 +33,21 @@ Tune Sphere is a full-stack web application designed to provide users with a sea
 - **Authentication:** JSON Web Tokens (JWT)
 - **APIs**: Ticketmaster, Spotify
 
-
-## installations
-
+## Installations
 - run npm i to install packages
 - npm run dev
 - npm start:dev
 
-## development team
+## License
+MIT
 
+## Development Team
 - Thida phongsavath
 - Mahesh Gunasekaran
 - Allen Arnoldy
 - Atoumane Diagne
+
+## Demo
+https://tune-sphere-oibp.onrender.com
 
 
