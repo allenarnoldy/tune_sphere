@@ -12,7 +12,7 @@ function NavTabs() {
 
   return (
     <>
-      <h1>Tune Sphere</h1>
+      <h1>TuneSphere</h1>
       <ul className="nav nav-tabs justify-content-end">
         <li className="nav-item">
           <Link
