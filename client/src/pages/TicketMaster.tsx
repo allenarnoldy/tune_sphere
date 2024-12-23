@@ -62,6 +62,7 @@ const TicketMaster = () => {
         <>
             {/* {
                 !loginCheck ? ( */}
+            
             <img src="/tuneSphere-no-bg.png" alt="TuneSphere picture" width="200" height="200"></img>
             <form className="form mb-4" onSubmit={handleSubmit}>
                 <div className='login-notice'>
@@ -76,7 +77,7 @@ const TicketMaster = () => {
                     </div>
 
                     <div className="col-2">
-                        <button type="submit" className="btn btn-light border fw-bold">Submit</button>
+                        <button type="submit" className="btn btn-light border fw-bold py-2">Submit</button>
                     </div>
                 </div>
             </form>
