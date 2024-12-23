@@ -53,8 +53,8 @@ MIT
 https://tune-sphere-oibp.onrender.com
 <br><br>
 
-![Screenshot 1](client/dist/screenshot1.png)<br><br><br>
-![Screenshot 2](client/dist/screenshot2.png)<br><br><br>
-![Screenshot 3](client/dist/screenshot3.png)<br><br><br>
-![Screenshot 4](client/dist/screenshot4.png)<br><br><br>
-![Screenshot 4](client/dist/screenshot5.png)<br><br><br>
+![Screenshot 1](client/public/screenshot1.png)<br><br><br>
+![Screenshot 2](client/public/screenshot2.png)<br><br><br>
+![Screenshot 3](client/public/screenshot3.png)<br><br><br>
+![Screenshot 4](client/public/screenshot4.png)<br><br><br>
+![Screenshot 4](client/public/screenshot5.png)<br><br><br>
